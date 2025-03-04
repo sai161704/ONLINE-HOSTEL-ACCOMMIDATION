@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_STUDENTS 100
+#define MAX_ROOMS 50
+
+typedef struct {
+    char name[50];
+    int age;
+    char gender;
+    // Add more student details as needed
+} Student;
+
+typedef struct {
+    int roomNumber;
+    int capacity;
+    int occupied;
+    // You can add more room details
+} Room;
+
+void displayMenu() {
+    printf("\nHostel Accommodation System\n");
+    printf("1. Register Student\n");
+    printf("2. Allocate Room\n");
+    printf("3. Display Student Details\n");
+    printf("4. Display Room Details\n");
+    printf("5. Exit\n");
+    printf("Enter your choice: ");
+}
+
+int main() {
+    Student students[MAX_STUDENTS];
+    Room rooms[MAX_ROOMS];
+
+    int studentCount = 0;
+    int roomCount = 0;
+
+    int choice;
+    do {
+        displayMenu();
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                // Register Student
+                if (studentCount < MAX_STUDENTS) {
+                    printf("Enter student name: ");
+                    scanf("%s", students[studentCount].name);
+                    // Add more details if needed
+                    printf("Enter student age: ");
+                    scanf("%d", &students[studentCount].age);
+                    printf("Enter student gender (M/F): ");
+                    scanf(" %c", &students[studentCount].gender);
+
+                    printf("Student registered successfully!\n");
+                    studentCount++;
+                } else {
+                    printf("Maximum student capacity reached.\n");
+                }
+                break;
+
+            case 2:
+                // Allocate Room
+                if (studentCount > 0 && roomCount < MAX_ROOMS) {
+                    int studentIndex;
+                    printf("Enter student index (0 to %d): ", studentCount - 1);
+                    scanf("%d", &studentIndex);
+
+                    if (studentIndex >= 0 && studentIndex < studentCount) {
+                        printf("Enter room number: ");
+                        scanf("%d", &rooms[roomCount].roomNumber);
+
+                        // You can add more room details and validation
+
+                        rooms[roomCount].occupied = 1;
+                        rooms[roomCount].capacity++; // Increase occupancy count
+
+                        printf("Room allocated successfully!\n");
+                        roomCount++;
+                    } else {
+                        printf("Invalid student index.\n");
+                    }
+                } else {
+                    printf("No students registered or maximum room capacity reached.\n");
+                }
+                break;
+
+            case 3:
+                // Display Student Details
+                for (int i = 0; i < studentCount; i++) {
+                    printf("Student %d: %s, Age: %d, Gender: %c\n", i + 1, students[i].name, students[i].age, students[i].gender);
+                }
+                break;
+
+            case 4:
+                // Display Room Details
+                for (int i = 0; i < roomCount; i++) {
+                    printf("Room %d: Room Number: %d, Capacity: %d, Occupied: %s\n", i + 1, rooms[i].roomNumber, rooms[i].capacity, rooms[i].occupied ? "Yes" : "No");
+                }
+                break;
+
+            case 5:
+                // Exit
+                printf("Exiting program.\n");
+                break;
+
+            default:
+                printf("Invalid choice. Please enter a valid option.\n");
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
